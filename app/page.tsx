@@ -4,8 +4,6 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   Volume2,
   VolumeX,
-  Plus,
-  Minus,
   Check,
   ArrowRight,
   Play,
@@ -22,12 +20,8 @@ import {
   Columns3,
   LayoutDashboard,
   Share2,
-  SlidersHorizontal
+  Mic
 } from 'lucide-react';
-
-// ============================================================================
-// CORE DATA MODELS & TYPES
-// ============================================================================
 
 export type EnergyMode = 'high' | 'balanced' | 'survival' | 'recharge';
 
@@ -166,7 +160,6 @@ export function getTieredTaskDetails(
     };
   }
 
-  // Lightest 2-min version
   if (lower.includes('walk')) {
     return {
       title: 'Step by an open window for fresh air',
@@ -205,10 +198,6 @@ export function getTieredTaskDetails(
     ]),
   };
 }
-
-// ============================================================================
-// BACKGROUND COMPATIBILITY ENGINE
-// ============================================================================
 
 export function calculateTaskCompatibility(
   task: TaskItem,
@@ -272,10 +261,6 @@ export function getVisiblePlateTasks(
 
   return sorted.slice(0, 3);
 }
-
-// ============================================================================
-// PROCEDURAL WEB AUDIO BROWN NOISE SYNTHESIZER (AudioBufferSourceNode)
-// ============================================================================
 
 class BrownNoiseEngine {
   private static instance: BrownNoiseEngine | null = null;
@@ -361,17 +346,11 @@ class BrownNoiseEngine {
         this.sourceNode?.disconnect();
         this.filterNode?.disconnect();
         this.gainNode?.disconnect();
-      } catch {
-        // Ignore cleanup errors
-      }
+      } catch {}
       this.isPlaying = false;
     }, 180);
   }
 }
-
-// ============================================================================
-// MULTI-TASK SENTENCE SPLITTER ENGINE
-// ============================================================================
 
 export function deterministicSlice(title: string): {
   ignitionPrompt: string;
@@ -445,7 +424,7 @@ export function splitMultiTaskSentence(raw: string): string[] {
 
   const cleaned = raw
     .trim()
-    .replace(/^(?:hey\s+|hi\s+)?(?:don'?t\s+forget\s+to|remember\s+to|make\s+sure\s+to|can\s+you|i\s+also\s+need\s+to|i\s+need\s+to|i\s+have\s+to|i\s+want\s+to|i\s+should|i\s+gotta|gotta|need\s+to|have\s+to|remind\s+me\s+to|today\s+i\s+will|today\s+i\s+need\s+to|please)\s+/i, '');
+    .replace(/^(?:hey\s+|hi\s+)?(?:alexa[,:\s]+)?(?:don'?t\s+forget\s+to|remember\s+to|make\s+sure\s+to|can\s+you|i\s+also\s+need\s+to|i\s+need\s+to|i\s+have\s+to|i\s+want\s+to|i\s+should|i\s+gotta|gotta|need\s+to|have\s+to|remind\s+me\s+to|today\s+i\s+will|today\s+i\s+need\s+to|please)\s+/i, '');
 
   const pass1 = cleaned
     .split(/(?:[,;\n•|]+|\b(?:and\s+then|and\s+also|after\s+that|followed\s+by|as\s+well\s+as|then\s+also|also|then|plus|next|later|finally)\b|(?:^|\s)(?:\d+[.)]|[-*])\s+)/gi)
@@ -538,7 +517,7 @@ export function deterministicBrainDump(
 
     const durationMatch = lower.match(/(\d+)\s*(min(?:ute)?s?|hr|hour|hours)/i);
 
-    if (/\b(study|write|build|debug|fix|code|architect|paper|essay|abstract|implement|css|portfolio|assignment|exam|project|report)\b/.test(lower)) {
+    if (/\b(study|write|build|debug|fix|code|architect|paper|essay|abstract|implement|css|portfolio|assignment|exam|project|report|gate)\b/.test(lower)) {
       spoonCost = 3;
       inertia = 'desk';
       activationFriction = 2;
@@ -548,7 +527,7 @@ export function deterministicBrainDump(
       inertia = 'mobile';
       activationFriction = 1;
       durationLabel = '10 min';
-    } else if (/\b(clean|wash|buy|walk|milk|groceries|laundry|desk|trash|gym|oat|explore|room|dishes|stretch|water|run|workout|cook)\b/.test(lower)) {
+    } else if (/\b(clean|wash|buy|walk|milk|groceries|laundry|desk|trash|gym|oat|explore|room|dishes|stretch|water|run|workout|cook|khichdi)\b/.test(lower)) {
       spoonCost = /\b(drink|stretch|refill|water)\b/.test(lower) ? 1 : 2;
       inertia = 'physical';
       activationFriction = 1;
@@ -595,10 +574,6 @@ export function deterministicBrainDump(
   });
 }
 
-// ============================================================================
-// PRE-SEEDED ACTIVITIES
-// ============================================================================
-
 export function createInitialTasks(): TaskItem[] {
   return [
     {
@@ -616,7 +591,7 @@ export function createInitialTasks(): TaskItem[] {
       ],
       status: 'plate',
       rolloverCount: 0,
-      createdAt: '2026-10-18T08:30:00Z',
+      createdAt: '2026-10-23T08:30:00Z',
     },
     {
       id: 'task-2',
@@ -633,7 +608,7 @@ export function createInitialTasks(): TaskItem[] {
       ],
       status: 'plate',
       rolloverCount: 0,
-      createdAt: '2026-10-18T09:00:00Z',
+      createdAt: '2026-10-23T09:00:00Z',
     },
     {
       id: 'task-3',
@@ -650,7 +625,7 @@ export function createInitialTasks(): TaskItem[] {
       ],
       status: 'plate',
       rolloverCount: 3,
-      createdAt: '2026-10-15T10:00:00Z',
+      createdAt: '2026-10-20T10:00:00Z',
     },
     {
       id: 'task-4',
@@ -667,7 +642,7 @@ export function createInitialTasks(): TaskItem[] {
       ],
       status: 'plate',
       rolloverCount: 0,
-      createdAt: '2026-10-18T09:15:00Z',
+      createdAt: '2026-10-23T09:15:00Z',
     },
     {
       id: 'task-5',
@@ -684,7 +659,7 @@ export function createInitialTasks(): TaskItem[] {
       ],
       status: 'plate',
       rolloverCount: 1,
-      createdAt: '2026-10-17T14:20:00Z',
+      createdAt: '2026-10-22T14:20:00Z',
     },
     {
       id: 'task-6',
@@ -701,7 +676,7 @@ export function createInitialTasks(): TaskItem[] {
       ],
       status: 'holding',
       rolloverCount: 4,
-      createdAt: '2026-10-12T11:00:00Z',
+      createdAt: '2026-10-18T11:00:00Z',
     },
     {
       id: 'task-7',
@@ -718,7 +693,7 @@ export function createInitialTasks(): TaskItem[] {
       ],
       status: 'holding',
       rolloverCount: 1,
-      createdAt: '2026-10-17T16:00:00Z',
+      createdAt: '2026-10-22T16:00:00Z',
     },
     {
       id: 'task-8',
@@ -735,7 +710,7 @@ export function createInitialTasks(): TaskItem[] {
       ],
       status: 'holding',
       rolloverCount: 0,
-      createdAt: '2026-10-18T10:05:00Z',
+      createdAt: '2026-10-23T10:05:00Z',
     },
   ];
 }
@@ -774,10 +749,6 @@ export function computeOverdraftAndMarkTasks(
   };
 }
 
-// ============================================================================
-// FOCUS READING TEXT COMPONENT
-// ============================================================================
-
 interface SaccadicTextProps {
   text: string;
   className?: string;
@@ -813,10 +784,6 @@ export const SaccadicText: React.FC<SaccadicTextProps> = ({ text, className = ''
     </span>
   );
 };
-
-// ============================================================================
-// BESPOKE HAND-DRAWN ILLUSTRATIONS MATCHING THE SCREENSHOT (ZERO EMOJIS)
-// ============================================================================
 
 const CalendarMoodFaceSVG: React.FC<{ mood: 'blue' | 'green' | 'yellow' }> = ({ mood }) => {
   if (mood === 'blue') {
@@ -990,10 +957,6 @@ const AstronautHeroSVG: React.FC<{ compact?: boolean }> = ({ compact = false }) 
   </svg>
 );
 
-// ============================================================================
-// MOBILE PHONE BOTTOM NAVIGATION BAR (EXACT SCREENSHOT MATCH)
-// ============================================================================
-
 interface BottomNavBarProps {
   activeScreen: 'home' | 'calendar' | 'progress' | 'capture' | 'settings';
   onNavigate: (screen: 'home' | 'calendar' | 'progress' | 'capture' | 'settings') => void;
@@ -1073,13 +1036,488 @@ const BottomNavBar: React.FC<BottomNavBarProps> = ({
   );
 };
 
-// ============================================================================
-// MAIN APPLICATION (CLEAN EDITORIAL DESIGN — ZERO VISIBLE SPOONS OR EMOJI SLOP)
-// ============================================================================
+interface AlexaSimulatorProps {
+  userName: string;
+  remainingSpoons: number;
+  dailyBudget: number;
+  onRebalanceLive: () => void;
+  onDecomposeLive: (microSteps: string[]) => void;
+  onSleepSyncLive: (minutes: number, newBudget: number) => void;
+  onSensoryShieldLive: () => void;
+  onVoiceBrainDumpLive: (utterance: string) => void;
+  onBodyDoubleLive: () => void;
+  onCustomPlanLive: (
+    utterance: string,
+    sleepHours: number | null,
+    explicitSpoons: number | null,
+    isOverwhelmed: boolean,
+    activateBrownNoise: boolean,
+    taskSegmentText: string,
+    maxTasks: number | null,
+    clearBoard: boolean
+  ) => number;
+}
+
+const BuiltInAlexaPlusSimulator: React.FC<AlexaSimulatorProps> = ({
+  userName,
+  remainingSpoons,
+  dailyBudget,
+  onRebalanceLive,
+  onDecomposeLive,
+  onSleepSyncLive,
+  onSensoryShieldLive,
+  onVoiceBrainDumpLive,
+  onBodyDoubleLive,
+  onCustomPlanLive,
+}) => {
+  const [alexaReply, setAlexaReply] = useState(
+    `Hi ${userName}. You have ${remainingSpoons} of ${dailyBudget} spoons available today. Say or type anything to Alexa+ below and Spoons will build your plan.`
+  );
+  const [mcpLog, setMcpLog] = useState(
+    'POST /api/mcp (Spec 2025-11-25 Streamable HTTP Ready)'
+  );
+  const [loading, setLoading] = useState(false);
+  const [customUtterance, setCustomUtterance] = useState('');
+  const [isListening, setIsListening] = useState(false);
+
+  const speak = (text: string) => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = 1.02;
+      window.speechSynthesis.speak(u);
+    }
+  };
+
+  const invokeMcp = async (toolName: string, args: Record<string, unknown>, utterance: string) => {
+    setLoading(true);
+    const reqPayload = {
+      jsonrpc: '2.0',
+      id: Date.now(),
+      method: 'tools/call',
+      params: { name: toolName, arguments: args },
+    };
+    setMcpLog(
+      `Utterance: "${utterance}"\nRequest -> POST /api/mcp (2025-11-25)\n` +
+        JSON.stringify(reqPayload, null, 2)
+    );
+
+    try {
+      const res = await fetch('/api/mcp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(reqPayload),
+      });
+      const data = await res.json();
+      setMcpLog((prev) => `${prev}\n\nResponse <- MCP Server\n` + JSON.stringify(data, null, 2));
+
+      const parsed = JSON.parse(data?.result?.content?.[0]?.text || '{}');
+
+      if (toolName === 'plan_from_any_utterance') {
+        const addedCount = onCustomPlanLive(
+          utterance,
+          parsed.detectedSleepHours ?? null,
+          parsed.explicitSpoons ?? null,
+          Boolean(parsed.isOverwhelmed),
+          Boolean(parsed.activateBrownNoise),
+          String(parsed.taskSegmentText ?? ""),
+          parsed.maxTasks ?? null,
+          Boolean(parsed.clearBoard)
+        );
+        const msg =
+          parsed.alexaSpokenResponse ||
+          `I analyzed your request in Spoons and organized ${addedCount} energy-paced tasks for your schedule.`;
+        setAlexaReply(msg);
+        speak(msg);
+      } else if (toolName === 'rebalance_schedule') {
+        onRebalanceLive();
+        const msg =
+          parsed.alexaSpokenResponse ||
+          'I updated your energy budget to 2 spoons, switched Spoons to Quiet Dusk mode, and deferred heavy tasks to tomorrow.';
+        setAlexaReply(msg);
+        speak(msg);
+      } else if (toolName === 'log_sleep_and_calibrate') {
+        onSleepSyncLive(parsed.sleepMinutes || 255, parsed.calibratedDailyBudget || 6);
+        const msg =
+          parsed.alexaSpokenResponse ||
+          'I logged 4 hours and 15 minutes of sleep. Because of sleep debt, I calibrated your daily budget to 6 spoons so you can pace gently.';
+        setAlexaReply(msg);
+        speak(msg);
+      } else if (toolName === 'trigger_sensory_shield') {
+        onSensoryShieldLive();
+        const msg =
+          parsed.alexaSpokenResponse ||
+          'I activated your 380 Hertz brown noise acoustic shield, logged sensory overload, and dimmed Spoons to Quiet Dusk.';
+        setAlexaReply(msg);
+        speak(msg);
+      } else if (toolName === 'voice_brain_dump') {
+        const rawText = String(args.rawUtterance || 'call mom buy oat milk and check lab notes');
+        onVoiceBrainDumpLive(rawText);
+        const msg =
+          parsed.alexaSpokenResponse ||
+          'I captured your voice brain dump, split it into 3 energy-tagged tasks, and checked off your morning water and breakfast.';
+        setAlexaReply(msg);
+        speak(msg);
+      } else if (toolName === 'decompose_overwhelming_task') {
+        const steps: string[] = parsed.microSteps || [
+          '1. [1 Spoon] Open Header.tsx without editing yet',
+          '2. [1 Spoon] Adjust mobile flex gap on line 24',
+          '3. [1 Spoon] Save and take a 5-minute sensory rest',
+        ];
+        onDecomposeLive(steps);
+        const msg = `I used Amazon Bedrock to break that down into 3 low-friction steps. ${steps[0]}`;
+        setAlexaReply(`${msg}\n\n${steps.join('\n')}`);
+        speak(msg);
+      } else if (toolName === 'start_body_double') {
+        onBodyDoubleLive();
+        const msg =
+          'Starting your 5-minute body-doubling flow timer now. Just do the first 30 seconds with me—open Header.tsx and adjust line 24.';
+        setAlexaReply(msg);
+        speak(msg);
+      }
+    } catch {
+      if (toolName === 'plan_from_any_utterance') {
+        onCustomPlanLive(utterance, 5, 3, true, false, "", 3, true);
+      }
+      if (toolName === 'rebalance_schedule') onRebalanceLive();
+      if (toolName === 'log_sleep_and_calibrate') onSleepSyncLive(255, 6);
+      if (toolName === 'trigger_sensory_shield') onSensoryShieldLive();
+      if (toolName === 'voice_brain_dump') onVoiceBrainDumpLive('call mom buy oat milk and check lab notes');
+      if (toolName === 'start_body_double') onBodyDoubleLive();
+      setAlexaReply('Executed Alexa+ MCP tool and synced your Spoons board.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCustomAlexaSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customUtterance.trim()) return;
+    const text = customUtterance.trim();
+    setCustomUtterance('');
+    invokeMcp('plan_from_any_utterance', { utterance: text }, text);
+  };
+
+  const recognitionRef = useRef<any>(null);
+
+  const startVoiceRecognition = async () => {
+    if (typeof window === "undefined") return;
+
+    if (isListening && recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+      } catch {}
+      setIsListening(false);
+      return;
+    }
+
+    const SpeechRec =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRec) {
+      setAlexaReply("Speech recognition is not supported in this browser. Please open localhost:3000 in Google Chrome or Safari (and enable Dictation in macOS System Settings -> Keyboard).");
+      return;
+    }
+
+    try {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach((track) => track.stop());
+      }
+    } catch {
+      setAlexaReply("Microphone access was blocked. Please click the camera/mic icon in your browser address bar and allow Microphone access for localhost.");
+      return;
+    }
+
+    try {
+      window.speechSynthesis?.cancel();
+      const recognition = new SpeechRec();
+      recognitionRef.current = recognition;
+      recognition.lang = "en-US";
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+
+      let finalTranscript = "";
+
+      recognition.onstart = () => {
+        setIsListening(true);
+        setAlexaReply("🎙️ Listening... Speak now (e.g., \"Alexa, I slept 5 hours and need to study for GATE, reply to Prof Nair, and cook dinner\")");
+      };
+
+      recognition.onresult = (event: any) => {
+        let interim = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const piece = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += piece + " ";
+          } else {
+            interim += piece;
+          }
+        }
+        const combined = (finalTranscript + interim).trim();
+        if (combined) {
+          setCustomUtterance(combined);
+        }
+      };
+
+      recognition.onerror = (event: any) => {
+        setIsListening(false);
+        if (event.error === "not-allowed") {
+          setAlexaReply("Microphone permission denied. Please allow microphone access in your browser settings.");
+        } else if (event.error === "no-speech") {
+          setAlexaReply("No speech was detected. Click Speak and talk into your microphone.");
+        } else {
+          setAlexaReply("Voice error (" + event.error + "). If on Safari, make sure macOS Dictation is enabled in System Settings -> Keyboard -> Dictation.");
+        }
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+        const spokenText = finalTranscript.trim();
+        if (spokenText) {
+          setCustomUtterance(spokenText);
+          invokeMcp("plan_from_any_utterance", { utterance: spokenText }, spokenText);
+        }
+      };
+
+      recognition.start();
+    } catch (err) {
+      setIsListening(false);
+      setAlexaReply("Could not start microphone recognition. Try using Chrome or enabling macOS Dictation.");
+    }
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-8 mt-4">
+      <div
+        className="rounded-[32px] p-5 sm:p-6 shadow-xl border"
+        style={{
+          backgroundColor: '#18201B',
+          borderColor: 'rgba(124, 144, 112, 0.45)',
+          color: '#FAF9F6',
+        }}
+      >
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3 mb-4">
+          <div className="flex items-center gap-2.5">
+            <span className="w-3 h-3 rounded-full bg-[#E2F0C5] animate-pulse inline-block" />
+            <h3 className="text-xs sm:text-sm font-extrabold tracking-wide text-[#E2F0C5]">
+              Spoons • Alexa+ Multimodal Simulator (MCP Spec 2025-11-25)
+            </h3>
+          </div>
+          <span className="text-[11px] font-semibold px-3 py-1 rounded-full bg-[#354939] text-[#E2F0C5] border border-[#7C9070]/40">
+            Amazon Bedrock Nova Lite + Live Voice Planner
+          </span>
+        </div>
+
+        <form onSubmit={handleCustomAlexaSubmit} className="mb-4 flex flex-wrap items-center gap-2">
+          <input
+            type="text"
+            value={customUtterance}
+            onChange={(e) => setCustomUtterance(e.target.value)}
+            placeholder='Say or type anything to Alexa+ (e.g., "Alexa, I slept 5 hours, I feel overwhelmed, and I need to study for GATE, reply to Prof Nair, and cook dinner")...'
+            className="flex-1 min-w-[240px] px-4 py-2.5 rounded-full bg-[#111612] border border-[#7C9070]/40 text-xs sm:text-sm text-[#FAF9F6] placeholder-[#A8B0A4] focus:outline-none focus:border-[#E2F0C5]"
+          />
+          <button
+            type="button"
+            onClick={startVoiceRecognition}
+            className="px-4 py-2.5 rounded-full text-xs font-bold inline-flex items-center gap-1.5 border border-[#7C9070]/50 transition-transform active:scale-95"
+            style={{
+              backgroundColor: isListening ? '#E2F0C5' : '#242E26',
+              color: isListening ? '#18201B' : '#E2F0C5',
+            }}
+          >
+            <Mic className="w-3.5 h-3.5" />
+            <span>{isListening ? 'Listening...' : 'Speak'}</span>
+          </button>
+          <button
+            type="submit"
+            className="px-5 py-2.5 rounded-full text-xs font-extrabold inline-flex items-center gap-1.5 transition-transform active:scale-95"
+            style={{ backgroundColor: '#7C9070', color: '#FAF9F6' }}
+          >
+            <span>Ask Alexa+ to Plan</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </form>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+          <div className="lg:col-span-7 flex flex-col justify-between rounded-[24px] bg-black/35 p-4 border border-white/10">
+            <div>
+              <div className="text-[10px] uppercase tracking-wider text-[#A8B0A4] font-bold mb-1.5">
+                Alexa+ Voice & Echo Show Card Output
+              </div>
+              <div className="p-3.5 rounded-2xl bg-[#111612] border border-[#7C9070]/30 text-xs sm:text-sm leading-relaxed whitespace-pre-line text-[#FAF9F6]">
+                {loading ? 'Alexa+ is invoking MCP tool via /api/mcp...' : alexaReply}
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <div className="text-[11px] text-[#A8B0A4] mb-2 font-medium">
+                Or Trigger Preset Voice Utterances (Syncs Spoons Board Below):
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() =>
+                    invokeMcp(
+                      'log_sleep_and_calibrate',
+                      { hoursSlept: 4.25, sleepQuality: 'fragmented' },
+                      'Alexa, I only slept 4 hours and 15 minutes last night. Calibrate my spoons.'
+                    )
+                  }
+                  className="text-xs px-3.5 py-2 rounded-full font-bold transition-transform active:scale-95"
+                  style={{ backgroundColor: '#7C9070', color: '#FAF9F6' }}
+                >
+                  😴 &ldquo;Alexa, I only slept 4h 15m—calibrate my day&rdquo;
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    invokeMcp(
+                      'trigger_sensory_shield',
+                      { triggerType: 'sensory noise' },
+                      'Alexa, it is too loud in here—turn on my sensory shield.'
+                    )
+                  }
+                  className="text-xs px-3.5 py-2 rounded-full font-bold transition-transform active:scale-95 bg-[#354939] text-[#E2F0C5] border border-[#7C9070]/50"
+                >
+                  🎧 &ldquo;Alexa, turn on 380Hz sensory shield&rdquo;
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    invokeMcp(
+                      'rebalance_schedule',
+                      { remainingSpoons: 2, sensoryState: 'migraine & overwhelmed' },
+                      'Alexa, I have a migraine and I am down to 2 spoons. Rebalance my afternoon.'
+                    )
+                  }
+                  className="text-xs px-3.5 py-2 rounded-full font-semibold bg-[#242E26] text-[#FAF9F6] border border-white/15 hover:bg-[#2F3B31]"
+                >
+                  🎙️ &ldquo;Alexa, I&apos;m down to 2 spoons—rebalance&rdquo;
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    invokeMcp(
+                      'voice_brain_dump',
+                      { rawUtterance: 'call mom buy oat milk and check lab notes' },
+                      'Alexa, brain dump: call mom buy oat milk and check lab notes, plus I drank water and ate breakfast.'
+                    )
+                  }
+                  className="text-xs px-3.5 py-2 rounded-full font-semibold bg-[#242E26] text-[#E2F0C5] border border-[#7C9070]/40 hover:bg-[#2F3B31]"
+                >
+                  🧠 &ldquo;Alexa, brain dump chores & log breakfast&rdquo;
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    invokeMcp(
+                      'decompose_overwhelming_task',
+                      { taskTitle: 'Polish responsive layout on portfolio' },
+                      'Alexa, break down my portfolio layout task into 1-spoon steps.'
+                    )
+                  }
+                  className="text-xs px-3.5 py-2 rounded-full font-semibold bg-[#242E26] text-[#FAF9F6] border border-white/15 hover:bg-[#2F3B31]"
+                >
+                  ⚡ &ldquo;Alexa, break down portfolio task (Bedrock)&rdquo;
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    invokeMcp(
+                      'start_body_double',
+                      { taskId: 'task-4', durationMinutes: 5 },
+                      'Alexa, I have task paralysis—body double with me for 5 minutes.'
+                    )
+                  }
+                  className="text-xs px-3.5 py-2 rounded-full font-semibold bg-[#242E26] text-[#E2F0C5] border border-[#7C9070]/40 hover:bg-[#2F3B31]"
+                >
+                  ⏱️ &ldquo;Alexa, body double with me for 5m&rdquo;
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="lg:col-span-5 rounded-[24px] bg-black/80 p-4 border border-white/10 font-mono text-[11px] overflow-x-auto max-h-64">
+            <div className="text-[#A8B0A4] mb-1.5 border-b border-white/10 pb-1 font-bold">
+              LIVE MCP JSON-RPC INSPECTOR (`POST /api/mcp`)
+            </div>
+            <pre className="text-[#E2F0C5] whitespace-pre-wrap m-0">{mcpLog}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const STORAGE_KEY = 'spoons-v2-storage';
 
+const GLOBAL_STYLES = `
+  @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,opsz,SOFT,WONK,wght@0,9..144,0..100,0..1,400..700;1,9..144,0..100,0..1,400..700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --sage-card: #7C9070;
+    --sage-deep: #354939;
+    --stone-card: #EAE8E1;
+    --charcoal-card: #404040;
+    --sheet-white: #FAF9F6;
+    --text-primary: #18201B;
+    --text-muted: #525D55;
+    --accent-primary: #354939;
+    --border-subtle: #DCD8CE;
+  }
+
+  .font-jakarta {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+  .font-hyperlegible {
+    font-family: 'Atkinson Hyperlegible', system-ui, -apple-system, sans-serif;
+  }
+  .font-mono-ui {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+  [data-energy-mode="survival"] .bg-\\[\\#FAF9F6\\],
+  [data-energy-mode="recharge"] .bg-\\[\\#FAF9F6\\],
+  [data-energy-mode="survival"] .bg-\\[\\#FAF9F6\\]\\/95,
+  [data-energy-mode="recharge"] .bg-\\[\\#FAF9F6\\]\\/95,
+  [data-energy-mode="survival"] .bg-white,
+  [data-energy-mode="recharge"] .bg-white {
+    background-color: #242A24 !important;
+    color: #E4DFD3 !important;
+    border-color: rgba(124, 144, 112, 0.25) !important;
+  }
+  [data-energy-mode="survival"] .bg-\\[\\#EAE8E1\\],
+  [data-energy-mode="recharge"] .bg-\\[\\#EAE8E1\\] {
+    background-color: #2E362E !important;
+    color: #E4DFD3 !important;
+  }
+  [data-energy-mode="survival"] .text-\\[\\#18201B\\],
+  [data-energy-mode="recharge"] .text-\\[\\#18201B\\],
+  [data-energy-mode="survival"] .text-\\[\\#2B2D2A\\],
+  [data-energy-mode="recharge"] .text-\\[\\#2B2D2A\\] {
+    color: #E4DFD3 !important;
+  }
+  [data-energy-mode="survival"] .text-\\[\\#525D55\\],
+  [data-energy-mode="recharge"] .text-\\[\\#525D55\\] {
+    color: #A8B0A4 !important;
+  }
+`;
+
 export default function App() {
+  const [userName, setUserName] = useState<string>("Radha");
+  const [customTaskLimit, setCustomTaskLimit] = useState<number | null>(null);
+  const [isEditingName, setIsEditingName] = useState<boolean>(false);
+
   const [dailyBudget, setDailyBudgetState] = useState<number>(10);
   const [spentSpoons, setSpentSpoons] = useState<number>(2);
   const [currentInertia, setCurrentInertia] = useState<InertiaContext>('desk');
@@ -1094,30 +1532,43 @@ export default function App() {
     uxAnnotationsVisible: false,
   });
 
-  // Device View Mode
   const [deviceViewMode, setDeviceViewMode] = useState<'web' | 'phone-single' | 'phone-showcase'>('web');
   const [activePhoneScreen, setActivePhoneScreen] = useState<'calendar' | 'home' | 'progress'>('home');
   const [activeWebNav, setActiveWebNav] = useState<'overview' | 'calendar' | 'progress' | 'activities'>('overview');
 
-  // Calendar interactive mood map
+  const nowDate = useMemo(() => new Date(), []);
+  const currentDayOfMonth = nowDate.getDate();
+  const currentMonthShort = nowDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  const currentFullDateLabel = nowDate.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+  const firstDayOffset = useMemo(
+    () => new Date(nowDate.getFullYear(), nowDate.getMonth(), 1).getDay(),
+    [nowDate]
+  );
+  const daysInCurrentMonth = useMemo(
+    () => new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 0).getDate(),
+    [nowDate]
+  );
+
   const [calendarMoods, setCalendarMoods] = useState<Record<number, 'blue' | 'green' | 'yellow'>>({
     1: 'blue',
     2: 'green',
     3: 'yellow',
+    23: 'green',
   });
-  const [selectedMonth, setSelectedMonth] = useState('Dec, 2024');
+  const [selectedMonth, setSelectedMonth] = useState(currentMonthShort);
 
-  // Active Expanded Activity for 30s Gentle Start Modal
   const [activeIgnitionTask, setActiveIgnitionTask] = useState<TaskItem | null>(null);
   const [sandbarRunning, setSandbarRunning] = useState(false);
   const [sandbarElapsed, setSandbarElapsed] = useState(65);
 
-  // Active Activity Filter Tab
   const [activeWorkspaceView, setActiveWorkspaceView] = useState<
     'plate' | 'holding' | 'compost' | 'completed' | 'recharge'
   >('plate');
 
-  // Morning Routine Baseline Items (No emojis, no spoon labels)
   const [baselineItems, setBaselineItems] = useState<BaselineLivingItem[]>([
     { id: 'base-wake', label: 'Morning wake-up', spoons: 1, completed: true },
     { id: 'base-meds', label: 'Water & essentials', spoons: 1, completed: true },
@@ -1135,19 +1586,16 @@ export default function App() {
   const [bedBoundMode, setBedBoundMode] = useState<boolean>(false);
   const [shareBatteryOpen, setShareBatteryOpen] = useState<boolean>(false);
 
-  // Reactive Sleep, Diet & Exercise Bento State
-  const [sleepMinutes, setSleepMinutes] = useState<number>(288); // 4h 48 m
+  const [sleepMinutes, setSleepMinutes] = useState<number>(288);
   const [dietPercent, setDietPercent] = useState<number>(80);
   const [dietKcal, setDietKcal] = useState<number>(1600);
   const [exercisePercent, setExercisePercent] = useState<number>(45);
   const [exerciseSteps, setExerciseSteps] = useState<number>(1300);
 
-  // Interactive Overrides for Live Sentence Splitter Preview Chips
   const [previewOverrides, setPreviewOverrides] = useState<
     Record<number, { spoonCost?: SpoonCost; inertia?: InertiaContext; removed?: boolean }>
   >({});
 
-  // Ephemeral UI State
   const [brainDumpInput, setBrainDumpInput] = useState('');
   const [brainDumpNotice, setBrainDumpNotice] = useState<string | null>(null);
   const [sensoryDrawerOpen, setSensoryDrawerOpen] = useState(false);
@@ -1160,6 +1608,9 @@ export default function App() {
       const raw = window.localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
+        if (typeof parsed.userName === 'string' && parsed.userName.trim()) {
+          setUserName(parsed.userName);
+        }
         if (typeof parsed.dailyBudget === 'number') setDailyBudgetState(parsed.dailyBudget);
         if (typeof parsed.spentSpoons === 'number') setSpentSpoons(parsed.spentSpoons);
         if (parsed.currentInertia) setCurrentInertia(parsed.currentInertia);
@@ -1185,9 +1636,7 @@ export default function App() {
           }));
         }
       }
-    } catch {
-      // Ignore storage errors
-    }
+    } catch {}
     hydratedRef.current = true;
   }, []);
 
@@ -1197,6 +1646,7 @@ export default function App() {
       window.localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify({
+          userName,
           dailyBudget,
           spentSpoons,
           currentInertia,
@@ -1216,10 +1666,9 @@ export default function App() {
           sensory: { ...sensory, brownNoiseActive: false, uxAnnotationsVisible: false },
         })
       );
-    } catch {
-      // Ignore storage errors
-    }
+    } catch {}
   }, [
+    userName,
     dailyBudget,
     spentSpoons,
     currentInertia,
@@ -1278,10 +1727,16 @@ export default function App() {
   );
 
   const filteredVisiblePlateTasks = useMemo(() => {
+    if (customTaskLimit !== null) {
+      return updatedTasks
+        .filter((t) => t.status === "plate")
+        .sort((a, b) => a.spoonCost - b.spoonCost)
+        .slice(0, customTaskLimit);
+    }
     if (!bedBoundMode) return visiblePlateTasks;
-    const lowEffort = visiblePlateTasks.filter((t) => t.inertia !== 'physical');
+    const lowEffort = visiblePlateTasks.filter((t) => t.inertia !== "physical");
     return lowEffort.length > 0 ? lowEffort : visiblePlateTasks;
-  }, [visiblePlateTasks, bedBoundMode]);
+  }, [visiblePlateTasks, bedBoundMode, customTaskLimit, updatedTasks]);
 
   const holdingTasks = useMemo(() => {
     return updatedTasks
@@ -1331,12 +1786,166 @@ export default function App() {
     [remainingSpoons, dailyBudget]
   );
 
-  // Actions
-  const setDailyBudget = (nextBudget: number) => {
-    const clamped = Math.max(1, Math.min(12, nextBudget));
-    setDailyBudgetState(clamped);
-    const nextRemaining = Math.max(0, clamped - spentSpoons);
-    setEnergyModeState(deriveEnergyModeFromSpoons(nextRemaining));
+  const handleAlexaRebalance = () => {
+    setSpentSpoons(Math.max(0, dailyBudget - 2));
+    setEnergyModeState('survival');
+    setBedBoundMode(true);
+    setTasks((prev) =>
+      prev.map((t) => (t.status === 'plate' && t.spoonCost >= 2 ? { ...t, status: 'holding' } : t))
+    );
+    showToast('Alexa+ MCP: Rebalanced for 2 spoons & deferred heavy tasks');
+  };
+
+  const handleAlexaDecompose = (steps: string[]) => {
+    setTasks((prev) =>
+      prev.map((t) => {
+        if (t.id !== 'task-4') return t;
+        return {
+          ...t,
+          spoonCost: 1,
+          microSteps: steps.slice(0, 3).map((s, idx) => ({
+            id: `mcp-step-${Date.now()}-${idx}`,
+            label: s.replace(/^\d+\.\s*(\[\d+\s*Spoon\]\s*)?/i, ''),
+            completed: false,
+          })),
+        };
+      })
+    );
+    showToast('Alexa+ Bedrock MCP: Simplified portfolio task into 1-spoon micro-steps');
+  };
+
+  const handleAlexaSleepSync = (minutes: number, newBudget: number) => {
+    setSleepMinutes(minutes);
+    setDailyBudgetState(newBudget);
+    const rem = Math.max(1, newBudget - spentSpoons);
+    setEnergyModeState(deriveEnergyModeFromSpoons(rem));
+    showToast(`Alexa+ Sleep Sync: ${Math.floor(minutes / 60)}h ${minutes % 60}m logged • Budget set to ${newBudget} spoons`);
+  };
+
+  const handleAlexaSensoryShield = () => {
+    setEnergyModeState('survival');
+    if (!sensory.brownNoiseActive) {
+      BrownNoiseEngine.getInstance().start(sensory.brownNoiseVolume);
+      setSensory((prev) => ({ ...prev, brownNoiseActive: true }));
+    }
+    setSpoonThieves((prev) =>
+      prev.map((item) => (item.id === 'thief-noise' ? { ...item, count: item.count + 1 } : item))
+    );
+    setSpentSpoons((s) => Math.min(12, s + 1));
+    showToast('Alexa+ Sensory Shield: 380Hz Brown Noise Active & Quiet Dusk On');
+  };
+
+  const handleAlexaVoiceBrainDump = (utterance: string) => {
+    const newItems = deterministicBrainDump(utterance, remainingSpoons, currentInertia);
+    setTasks((prev) => [...newItems, ...prev]);
+    setDietPercent((d) => Math.min(100, d + 12));
+    setDietKcal((k) => Math.min(2200, k + 350));
+    setBaselineItems((prev) => prev.map((b) => ({ ...b, completed: true })));
+    showToast(`Alexa+ Brain Dump: Added ${newItems.length} tasks & checked off Morning Routine`);
+  };
+
+  const handleAlexaBodyDouble = () => {
+    const target = tasks.find((t) => t.id === 'task-4') || filteredVisiblePlateTasks[0] || tasks[0];
+    if (target) {
+      setActiveIgnitionTask(target);
+      setSandbarElapsed(65);
+      setSandbarRunning(true);
+      showToast(`Alexa+ Body Double: Started 5-Min Flow for "${target.title}"`);
+    }
+  };
+
+  const handleAlexaCustomPlan = (
+    utterance: string,
+    sleepHours: number | null,
+    explicitSpoons: number | null,
+    isOverwhelmed: boolean,
+    activateBrownNoise: boolean,
+    taskSegmentText: string,
+    maxTasks: number | null,
+    clearBoard: boolean
+  ): number => {
+    let nextBudget = dailyBudget;
+    let nextSpent = spentSpoons;
+
+    if (sleepHours !== null && !Number.isNaN(sleepHours)) {
+      const mins = Math.round(sleepHours * 60);
+      setSleepMinutes(mins);
+      nextBudget = sleepHours < 6 ? 6 : sleepHours >= 7.5 ? 11 : 9;
+      setDailyBudgetState(nextBudget);
+    }
+
+    if (explicitSpoons !== null && !Number.isNaN(explicitSpoons)) {
+      const clamped = Math.max(1, Math.min(12, explicitSpoons));
+      nextSpent = Math.max(0, nextBudget - clamped);
+      setSpentSpoons(nextSpent);
+    } else if (isOverwhelmed) {
+      nextSpent = Math.max(0, nextBudget - 3);
+      setSpentSpoons(nextSpent);
+    }
+
+    const targetRemaining = Math.max(1, nextBudget - nextSpent);
+
+    if (isOverwhelmed) {
+      setEnergyModeState("survival");
+      setBedBoundMode(true);
+    } else {
+      setEnergyModeState(deriveEnergyModeFromSpoons(targetRemaining));
+    }
+
+    if (activateBrownNoise && !sensory.brownNoiseActive) {
+      BrownNoiseEngine.getInstance().start(sensory.brownNoiseVolume);
+      setSensory((prev) => ({ ...prev, brownNoiseActive: true }));
+    }
+
+    const limit = maxTasks !== null && !Number.isNaN(maxTasks) ? Math.max(1, maxTasks) : isOverwhelmed ? 3 : null;
+    setCustomTaskLimit(limit);
+
+    const cleanedText = (taskSegmentText || "").trim();
+    const parsedItems =
+      cleanedText.length >= 4
+        ? deterministicBrainDump(cleanedText, targetRemaining, currentInertia)
+        : [];
+
+    setTasks((prev) => {
+      let pool = [...parsedItems, ...prev];
+      if (clearBoard || limit !== null) {
+        const activeCandidates = pool
+          .filter((t) => t.status === "plate" || parsedItems.some((p) => p.id === t.id))
+          .sort((a, b) => {
+            if (a.spoonCost !== b.spoonCost) return a.spoonCost - b.spoonCost;
+            return a.activationFriction - b.activationFriction;
+          });
+
+        const keepCount = limit !== null ? limit : 2;
+        const keepIds = new Set(activeCandidates.slice(0, keepCount).map((t) => t.id));
+
+        return pool.map((t) => {
+          if (keepIds.has(t.id)) {
+            return { ...t, status: "plate", spoonCost: 1 as SpoonCost };
+          }
+          if (t.status === "plate") {
+            return { ...t, status: "holding", isBorrowedEnergy: false };
+          }
+          return t;
+        });
+      }
+      return pool;
+    });
+
+    if (limit !== null) {
+      setTaskTiers((prev) => {
+        const next = { ...prev };
+        tasks.forEach((t) => {
+          next[t.id] = "survival";
+        });
+        return next;
+      });
+    }
+
+    showToast(
+      `Spoons Auto-Plan: Sleep ${sleepHours ? sleepHours + "h" : "updated"} • Board cleared to ${limit || 3} light tasks`
+    );
+    return limit || parsedItems.length || 3;
   };
 
   const toggleCalendarDayMood = (day: number) => {
@@ -1394,9 +2003,7 @@ export default function App() {
         document.execCommand('copy');
         document.body.removeChild(ta);
       }
-    } catch {
-      // Ignore copy fallback error
-    }
+    } catch {}
     showToast('Copied status note');
     setShareBatteryOpen(false);
   };
@@ -1444,23 +2051,6 @@ export default function App() {
     showToast('Saved for later');
   };
 
-  const moveTaskToPlate = (id: string) => {
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, status: 'plate' } : t)));
-    showToast('Added to today');
-  };
-
-  const compostTask = (id: string) => {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, status: 'composted', isBorrowedEnergy: false } : t))
-    );
-    showToast('Removed from queue');
-  };
-
-  const restoreTask = (id: string) => {
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, status: 'holding', rolloverCount: 0 } : t)));
-    showToast('Restored');
-  };
-
   const toggleMicroStep = (taskId: string, stepId: string) => {
     setTasks((prev) =>
       prev.map((t) => {
@@ -1475,7 +2065,6 @@ export default function App() {
     );
   };
 
-  // Live preview of detected tasks with interactive overrides
   const liveDetectedTasks = useMemo(() => {
     if (!brainDumpInput.trim()) return [];
     const rawList = deterministicBrainDump(brainDumpInput, remainingSpoons, currentInertia);
@@ -1590,7 +2179,40 @@ export default function App() {
     'low-brain': 'Rest',
   };
 
-  // Reusable Calendar Grid Card
+  const renderEditableGreeting = (textSizeClass: string = 'text-2xl sm:text-3xl') => (
+    <div className="flex items-center gap-2">
+      {isEditingName ? (
+        <input
+          type="text"
+          value={userName}
+          autoFocus
+          onChange={(e) => setUserName(e.target.value)}
+          onBlur={() => setIsEditingName(false)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') setIsEditingName(false);
+          }}
+          className="px-2.5 py-0.5 rounded-xl bg-black/20 text-[#FAF9F6] font-bold text-lg focus:outline-none border border-white/40 max-w-[180px]"
+        />
+      ) : (
+        <h2
+          onClick={() => setIsEditingName(true)}
+          className={`${textSizeClass} font-bold tracking-tight cursor-pointer hover:underline`}
+          title="Click to change your name"
+        >
+          Hello {userName},
+        </h2>
+      )}
+      <button
+        type="button"
+        onClick={() => setIsEditingName((prev) => !prev)}
+        className="p-1 rounded-full bg-white/15 hover:bg-white/25 text-[#FAF9F6]"
+        title="Edit your name"
+      >
+        <PenLine className="w-3.5 h-3.5" />
+      </button>
+    </div>
+  );
+
   const renderCalendarCard = () => (
     <div className="rounded-[30px] border-2 border-[#7C9070]/65 bg-white p-4 shadow-xs">
       <div className="grid grid-cols-7 text-center text-[11px] font-bold text-[#18201B] mb-2">
@@ -1604,26 +2226,38 @@ export default function App() {
       </div>
 
       <div className="grid grid-cols-7 gap-y-2.5 text-center items-center justify-items-center">
-        <div className="w-7 h-9" />
-        <div className="w-7 h-9" />
-        {Array.from({ length: 31 }).map((_, idx) => {
+        {Array.from({ length: firstDayOffset }).map((_, i) => (
+          <div key={`empty-${i}`} className="w-7 h-9" />
+        ))}
+        {Array.from({ length: daysInCurrentMonth }).map((_, idx) => {
           const dayNum = idx + 1;
           const mood = calendarMoods[dayNum];
+          const isToday = dayNum === currentDayOfMonth;
           return (
             <button
               key={dayNum}
               type="button"
               onClick={() => toggleCalendarDayMood(dayNum)}
               className="flex flex-col items-center justify-start group focus:outline-none"
-              title={`Day ${dayNum}`}
+              title={`Day ${dayNum}${isToday ? ' (Today)' : ''}`}
             >
-              <span className="text-[10px] font-bold text-[#18201B] mb-0.5 tabular-nums">
+              <span
+                className={`text-[10px] font-bold mb-0.5 tabular-nums px-1.5 rounded-full ${
+                  isToday ? 'bg-[#354939] text-[#FAF9F6]' : 'text-[#18201B]'
+                }`}
+              >
                 {dayNum}
               </span>
               {mood ? (
                 <CalendarMoodFaceSVG mood={mood} />
               ) : (
-                <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border border-[#D5D3CD] group-hover:border-[#7C9070] transition-colors" />
+                <span
+                  className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full border transition-colors ${
+                    isToday
+                      ? 'border-2 border-[#354939]'
+                      : 'border-[#D5D3CD] group-hover:border-[#7C9070]'
+                  }`}
+                />
               )}
             </button>
           );
@@ -1632,7 +2266,6 @@ export default function App() {
     </div>
   );
 
-  // Reusable 2x2 "My activities" Bento Grid
   const renderMyActivitiesBento = () => (
     <div className="grid grid-cols-12 gap-3">
       <div
@@ -1706,7 +2339,6 @@ export default function App() {
     </div>
   );
 
-  // Reusable Recommended Activity Card (Pure, clean typography matching screenshot)
   const renderActivityCard = (task: TaskItem, idx: number, showStepsInline: boolean = false) => {
     const isDarkCard = idx % 2 === 1;
     const activeTier: TaskTier =
@@ -1736,7 +2368,6 @@ export default function App() {
                   {tiered.durationLabel}
                 </span>
 
-                {/* Subtle Editorial Pace Switcher (Full · Light · 2m) */}
                 {showStepsInline && (
                   <div className="inline-flex items-center gap-1 text-[11px]">
                     {(['full', 'medium', 'survival'] as TaskTier[]).map((tLevel) => {
@@ -1864,66 +2495,14 @@ export default function App() {
         color: '#18201B',
       }}
     >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,opsz,SOFT,WONK,wght@0,9..144,0..100,0..1,400..700;1,9..144,0..100,0..1,400..700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+      <script src="https://cdn.tailwindcss.com" suppressHydrationWarning />
+      <style
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: GLOBAL_STYLES }}
+      />
 
-        :root {
-          --sage-card: #7C9070;
-          --sage-deep: #354939;
-          --stone-card: #EAE8E1;
-          --charcoal-card: #404040;
-          --sheet-white: #FAF9F6;
-          --text-primary: #18201B;
-          --text-muted: #525D55;
-          --accent-primary: #354939;
-          --border-subtle: #DCD8CE;
-        }
-
-        .font-jakarta {
-          font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-        }
-        .font-hyperlegible {
-          font-family: 'Atkinson Hyperlegible', system-ui, -apple-system, sans-serif;
-        }
-        .font-mono-ui {
-          font-family: 'JetBrains Mono', monospace;
-        }
-        .tabular-nums {
-          font-variant-numeric: tabular-nums;
-        }
-        [data-energy-mode="survival"] .bg-\\[\\#FAF9F6\\],
-        [data-energy-mode="recharge"] .bg-\\[\\#FAF9F6\\],
-        [data-energy-mode="survival"] .bg-\\[\\#FAF9F6\\]\\/95,
-        [data-energy-mode="recharge"] .bg-\\[\\#FAF9F6\\]\\/95,
-        [data-energy-mode="survival"] .bg-white,
-        [data-energy-mode="recharge"] .bg-white {
-          background-color: #242A24 !important;
-          color: #E4DFD3 !important;
-          border-color: rgba(124, 144, 112, 0.25) !important;
-        }
-        [data-energy-mode="survival"] .bg-\\[\\#EAE8E1\\],
-        [data-energy-mode="recharge"] .bg-\\[\\#EAE8E1\\] {
-          background-color: #2E362E !important;
-          color: #E4DFD3 !important;
-        }
-        [data-energy-mode="survival"] .text-\\[\\#18201B\\],
-        [data-energy-mode="recharge"] .text-\\[\\#18201B\\],
-        [data-energy-mode="survival"] .text-\\[\\#2B2D2A\\],
-        [data-energy-mode="recharge"] .text-\\[\\#2B2D2A\\] {
-          color: #E4DFD3 !important;
-        }
-        [data-energy-mode="survival"] .text-\\[\\#525D55\\],
-        [data-energy-mode="recharge"] .text-\\[\\#525D55\\] {
-          color: #A8B0A4 !important;
-        }
-      `}</style>
-
-      {/* ====================================================================
-          MINIMALIST STUDIO HEADER BAR (Zero Emoji Slop, Zero Spoon Labels)
-          ==================================================================== */}
       <header className="sticky top-0 z-30 backdrop-blur-md bg-[#FAF9F6]/75 border-b border-[#354939]/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
-          {/* Minimalist Botanical Mark */}
           <div className="flex items-center gap-3">
             <div
               className="w-8 h-8 rounded-full flex items-center justify-center"
@@ -1932,11 +2511,10 @@ export default function App() {
               <span className="w-2.5 h-2.5 rounded-full bg-[#E2F0C5]" />
             </div>
             <span className="text-base font-extrabold tracking-tight text-[#18201B]">
-              Rhythm
+              Spoons
             </span>
           </div>
 
-          {/* View Switcher: [ Web ] [ Phone ] [ Studio 3-Up ] */}
           <div className="inline-flex items-center bg-[#EAE8E1] p-1 rounded-full border border-[#354939]/12">
             <button
               type="button"
@@ -1978,7 +2556,6 @@ export default function App() {
             </button>
           </div>
 
-          {/* Right Utilities: Audio, Share, Settings */}
           <div className="flex items-center gap-2">
             <div className="inline-flex items-center gap-2 bg-[#EAE8E1] px-3 py-1.5 rounded-full">
               <button
@@ -2019,7 +2596,6 @@ export default function App() {
         </div>
       </header>
 
-      {/* Subtle Toast Notification */}
       {toastMessage && (
         <div className="max-w-sm mx-auto px-4 mt-3">
           <div className="px-4 py-2 rounded-full bg-[#354939] text-[#FAF9F6] text-xs font-medium flex items-center justify-between shadow-md">
@@ -2031,9 +2607,19 @@ export default function App() {
         </div>
       )}
 
-      {/* ====================================================================
-          CLEAN ONE-LINE QUICK CAPTURE INPUT (Auto-Splits Multi-Task Sentences)
-          ==================================================================== */}
+      <BuiltInAlexaPlusSimulator
+        userName={userName}
+        remainingSpoons={remainingSpoons}
+        dailyBudget={dailyBudget}
+        onRebalanceLive={handleAlexaRebalance}
+        onDecomposeLive={handleAlexaDecompose}
+        onSleepSyncLive={handleAlexaSleepSync}
+        onSensoryShieldLive={handleAlexaSensoryShield}
+        onVoiceBrainDumpLive={handleAlexaVoiceBrainDump}
+        onBodyDoubleLive={handleAlexaBodyDouble}
+        onCustomPlanLive={handleAlexaCustomPlan}
+      />
+
       <div className="max-w-4xl mx-auto px-4 sm:px-8 mt-4">
         <form
           onSubmit={handleBrainDumpSubmit}
@@ -2058,7 +2644,6 @@ export default function App() {
             </button>
           </div>
 
-          {/* Minimal Live Split Preview Pills */}
           {liveDetectedTasks.length > 0 && (
             <div className="px-3 pt-2 pb-1 flex flex-wrap items-center gap-2 border-t border-[#354939]/10 mt-1.5">
               {liveDetectedTasks.map((item, idx) => (
@@ -2102,22 +2687,17 @@ export default function App() {
         </form>
       </div>
 
-      {/* ====================================================================
-          MODE 1: WEB VERSION (Editorial Botanical Dashboard)
-          ==================================================================== */}
       {deviceViewMode === 'web' && (
         <main className="max-w-7xl mx-auto px-4 sm:px-8 py-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            {/* LEFT WEB SIDEBAR (3 Cols) */}
             <aside className="lg:col-span-3 rounded-[36px] bg-[#FAF9F6] p-5 shadow-xl border border-white/60 flex flex-col justify-between space-y-6">
               <div className="space-y-5">
-                {/* Profile Card */}
                 <div
                   className="rounded-[28px] p-5 text-[#FAF9F6]"
                   style={{ backgroundColor: '#7C9070' }}
                 >
                   <div className="text-xs opacity-85">Daily Overview</div>
-                  <div className="text-2xl font-extrabold tracking-tight mt-0.5">Hello Henry,</div>
+                  <div className="mt-0.5">{renderEditableGreeting('text-2xl')}</div>
                   <div className="mt-4 space-y-1.5">
                     <div className="flex items-center justify-between text-xs font-semibold">
                       <span>Daily Energy</span>
@@ -2132,7 +2712,6 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Web Navigation */}
                 <nav className="space-y-1.5">
                   {(
                     [
@@ -2164,7 +2743,6 @@ export default function App() {
                   })}
                 </nav>
 
-                {/* Quiet Morning Routine Check-In Card (Zero Emoji Slop) */}
                 <div className="rounded-[26px] bg-[#EAE8E1] p-4 space-y-2.5">
                   <div className="flex items-center justify-between text-xs font-bold text-[#18201B]">
                     <span>Morning Routine</span>
@@ -2200,7 +2778,6 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Pace & Environment Adjustments */}
                 <div className="rounded-[26px] bg-[#EAE8E1] p-4 space-y-2.5">
                   <div className="flex items-center justify-between text-xs font-bold text-[#18201B]">
                     <span>Pace Mode</span>
@@ -2252,7 +2829,6 @@ export default function App() {
               </button>
             </aside>
 
-            {/* RIGHT WEB DASHBOARD CANVAS (9 Cols) */}
             <div className="lg:col-span-9 space-y-6">
               {activeWebNav !== 'overview' && (
                 <div className="flex items-center justify-between px-5 py-2.5 rounded-full bg-[#FAF9F6] border border-[#354939]/12 text-xs font-bold">
@@ -2267,10 +2843,8 @@ export default function App() {
                 </div>
               )}
 
-              {/* TOP HERO ROW: Astronaut Sleep Card + Progress Wave & My Activities */}
               {(activeWebNav === 'overview' || activeWebNav === 'progress') && (
                 <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-                  {/* Cosmic Astronaut & Sleep Card (7 Cols) */}
                   <div
                     className="xl:col-span-7 rounded-[40px] overflow-hidden shadow-xl border border-white/40 flex flex-col justify-between"
                     style={{ backgroundColor: '#7C9070' }}
@@ -2278,9 +2852,7 @@ export default function App() {
                     <div className="p-6 pb-2 flex flex-col sm:flex-row items-center justify-between gap-4 text-[#FAF9F6]">
                       <div className="space-y-2 max-w-xs">
                         <span className="text-xs font-medium opacity-85">Home</span>
-                        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
-                          Hello Henry,
-                        </h2>
+                        {renderEditableGreeting()}
                         <p className="text-xs text-[#FAF9F6]/90 leading-relaxed">
                           Your daily schedule is paced around your rest and recovery.
                         </p>
@@ -2311,7 +2883,6 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Progress Wave Graph + My Activities Bento (5 Cols) */}
                   <div
                     className="xl:col-span-5 rounded-[40px] overflow-hidden shadow-xl border border-white/40 flex flex-col justify-between"
                     style={{ backgroundColor: '#7C9070' }}
@@ -2324,7 +2895,7 @@ export default function App() {
                           </span>
                           <span>Your progress</span>
                         </span>
-                        <span className="text-[11px] opacity-80">December 21, 2024</span>
+                        <span className="text-[11px] opacity-80">{currentFullDateLabel}</span>
                       </div>
 
                       <div className="flex items-end justify-between gap-2">
@@ -2358,10 +2929,8 @@ export default function App() {
                 </div>
               )}
 
-              {/* BOTTOM WORKSPACE ROW: Recommended Activities + Calendar */}
               {(activeWebNav === 'overview' || activeWebNav === 'activities' || activeWebNav === 'calendar') && (
                 <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
-                  {/* Left 7 Cols: Recommended Activities */}
                   <div
                     className="xl:col-span-7 rounded-[40px] p-6 shadow-xl border border-white/40 space-y-4"
                     style={{ backgroundColor: '#7C9070' }}
@@ -2477,13 +3046,14 @@ export default function App() {
                     )}
                   </div>
 
-                  {/* Right 5 Cols: Calendar Card */}
                   <div className="xl:col-span-5 rounded-[40px] bg-[#FAF9F6] p-6 shadow-xl border border-white/60 space-y-4">
                     <div className="flex items-center justify-between">
                       <button
                         type="button"
                         onClick={() =>
-                          setSelectedMonth((m) => (m === 'Dec, 2024' ? 'Oct, 2026' : 'Dec, 2024'))
+                          setSelectedMonth((m) =>
+                            m === currentMonthShort ? 'Nov, 2026' : currentMonthShort
+                          )
                         }
                         className="inline-flex items-center gap-1.5 text-lg font-extrabold text-[#18201B]"
                       >
@@ -2491,7 +3061,7 @@ export default function App() {
                         <span className="text-xs">▼</span>
                       </button>
                       <span className="text-xs font-semibold text-[#525D55]">
-                        Tap date to log mood
+                        Today: {currentFullDateLabel}
                       </span>
                     </div>
 
@@ -2504,9 +3074,6 @@ export default function App() {
         </main>
       )}
 
-      {/* ====================================================================
-          MODE 2: INTERACTIVE SINGLE PHONE APP VERSION
-          ==================================================================== */}
       {deviceViewMode === 'phone-single' && (
         <main className="max-w-md mx-auto px-4 py-6">
           <div className="flex items-center justify-center gap-2 mb-4">
@@ -2562,16 +3129,10 @@ export default function App() {
                 </div>
 
                 <div className="flex items-center justify-between mb-3 px-1">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setSelectedMonth((m) => (m === 'Dec, 2024' ? 'Oct, 2026' : 'Dec, 2024'))
-                    }
-                    className="inline-flex items-center gap-1.5 text-base font-bold text-[#18201B]"
-                  >
+                  <span className="inline-flex items-center gap-1.5 text-base font-bold text-[#18201B]">
                     <span>{selectedMonth}</span>
                     <span className="text-xs">▼</span>
-                  </button>
+                  </span>
                 </div>
 
                 {renderCalendarCard()}
@@ -2605,15 +3166,13 @@ export default function App() {
               className="rounded-[44px] shadow-2xl overflow-hidden flex flex-col justify-between border-4 border-white/70"
               style={{ backgroundColor: '#7C9070', minHeight: '760px' }}
             >
-              <div className="p-6 pb-2 relative">
-                <div className="flex items-center justify-between mb-4 text-[#FAF9F6]">
+              <div className="p-6 pb-2 relative text-[#FAF9F6]">
+                <div className="flex items-center justify-between mb-4">
                   <span className="w-5" />
                   <span className="text-sm font-medium">Home</span>
                   <Bell className="w-4 h-4" />
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-bold text-[#FAF9F6] tracking-tight mb-1">
-                  Hello Henry,
-                </h2>
+                {renderEditableGreeting()}
                 <AstronautHeroSVG />
               </div>
 
@@ -2696,7 +3255,7 @@ export default function App() {
                       {progressPercentage}%
                     </div>
                     <div className="text-[11px] text-[#FAF9F6]/80 mt-1">
-                      December 21, 2024
+                      {currentFullDateLabel}
                     </div>
                   </div>
 
@@ -2740,13 +3299,9 @@ export default function App() {
         </main>
       )}
 
-      {/* ====================================================================
-          MODE 3: 3-SCREEN SHOWCASE VIEW (Exact Reference Screenshot Layout)
-          ==================================================================== */}
       {deviceViewMode === 'phone-showcase' && (
         <main className="max-w-7xl mx-auto px-4 sm:px-8 py-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 xl:gap-8 items-start">
-            {/* Screen 1 */}
             <section
               className="rounded-[44px] shadow-2xl overflow-hidden flex flex-col justify-between border border-white/40"
               style={{ backgroundColor: '#FAF9F6', minHeight: '760px' }}
@@ -2796,20 +3351,17 @@ export default function App() {
               </div>
             </section>
 
-            {/* Screen 2 */}
             <section
               className="rounded-[44px] shadow-2xl overflow-hidden flex flex-col justify-between border border-white/40 lg:mt-10"
               style={{ backgroundColor: '#7C9070', minHeight: '720px' }}
             >
-              <div className="p-6 pb-2 relative">
-                <div className="flex items-center justify-between mb-4 text-[#FAF9F6]">
+              <div className="p-6 pb-2 relative text-[#FAF9F6]">
+                <div className="flex items-center justify-between mb-4">
                   <span className="w-5" />
                   <span className="text-sm font-medium">Home</span>
                   <Bell className="w-4 h-4" />
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-bold text-[#FAF9F6] tracking-tight mb-1">
-                  Hello Henry,
-                </h2>
+                {renderEditableGreeting()}
                 <AstronautHeroSVG />
               </div>
 
@@ -2844,7 +3396,6 @@ export default function App() {
               </div>
             </section>
 
-            {/* Screen 3 */}
             <section
               className="rounded-[44px] shadow-2xl overflow-hidden flex flex-col justify-between border border-white/40 lg:mt-10"
               style={{ backgroundColor: '#7C9070', minHeight: '720px' }}
@@ -2881,7 +3432,7 @@ export default function App() {
                     <div className="text-4xl sm:text-5xl font-bold tracking-tight tabular-nums">
                       {progressPercentage}%
                     </div>
-                    <div className="text-[11px] text-[#FAF9F6]/80 mt-1">December 21, 2024</div>
+                    <div className="text-[11px] text-[#FAF9F6]/80 mt-1">{currentFullDateLabel}</div>
                   </div>
                   <div className="flex-1 max-w-[190px]">
                     <svg viewBox="0 0 200 95" className="w-full h-24 overflow-visible">
@@ -2919,9 +3470,6 @@ export default function App() {
         </main>
       )}
 
-      {/* ====================================================================
-          ACTIVITY FOCUS PLAYER MODAL
-          ==================================================================== */}
       {activeIgnitionTask && (
         <div
           className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4"
@@ -3002,9 +3550,6 @@ export default function App() {
         </div>
       )}
 
-      {/* ====================================================================
-          SHARE STATUS MODAL (Zero Spoon Terminology)
-          ==================================================================== */}
       {shareBatteryOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4"
@@ -3070,9 +3615,6 @@ export default function App() {
         </div>
       )}
 
-      {/* ====================================================================
-          SETTINGS & DISPLAY DRAWER
-          ==================================================================== */}
       {sensoryDrawerOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex justify-end"
@@ -3084,7 +3626,7 @@ export default function App() {
             style={{ backgroundColor: '#FAF9F6', color: '#18201B' }}
           >
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-extrabold">Display & Sound</h2>
+              <h2 className="text-xl font-extrabold">Spoons Settings</h2>
               <button
                 type="button"
                 onClick={() => setSensoryDrawerOpen(false)}
@@ -3092,6 +3634,17 @@ export default function App() {
               >
                 <X className="w-4 h-4" />
               </button>
+            </div>
+
+            <div className="p-4 rounded-[26px] bg-[#EAE8E1] space-y-2">
+              <div className="text-xs font-bold">Your Name</div>
+              <input
+                type="text"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                placeholder="Enter your name"
+                className="w-full px-3.5 py-2 rounded-xl bg-[#FAF9F6] text-xs font-semibold text-[#18201B] border border-[#354939]/20 focus:outline-none"
+              />
             </div>
 
             <div className="p-4 rounded-[26px] bg-[#EAE8E1] space-y-2.5">

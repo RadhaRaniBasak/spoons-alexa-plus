@@ -9,11 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.1156.0",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "eslint-config-next": "^16.4.2",
     "framer-motion": "^11.0.0",
     "lucide-react": "^0.454.0",
-    "next": "14.2.15",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "next": "^16.4.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "zustand": "^5.0.0"
   },
   "devDependencies": {
